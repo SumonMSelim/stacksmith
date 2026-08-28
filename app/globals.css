@@ -114,27 +114,25 @@ input:focus {
   border-color: var(--accent);
 }
 
-/* Stripe-style buttons: whitish filled secondary, colorful blurple
-   primary. Corners stay sharp. */
+/* stripe.com buttons: pill-shaped, blurple filled primary, white
+   secondary with blurple text. */
 button {
-  background: #f6f9fc;
-  border: 1px solid #f6f9fc;
-  border-radius: 0;
-  color: #0a2540;
-  padding: 10px 12px 12px;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 999px;
+  color: var(--accent);
+  padding: 8px 16px 10px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
-  letter-spacing: -0.42px;
-  line-height: 1;
+  letter-spacing: -0.1px;
+  line-height: 1.3;
   cursor: pointer;
-  transition: all 80ms ease-in-out;
+  transition: all 150ms ease-in-out;
 }
 
 button:not(:disabled):hover {
-  background: #ffffff;
-  border-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  color: #0a2540;
 }
 
 button:disabled {
@@ -151,27 +149,26 @@ button.primary {
 button.primary:not(:disabled):hover {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
+  color: #ffffff;
 }
 
 button.ghost {
-  background: transparent;
-  border-color: var(--text);
-  color: var(--text);
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--accent);
 }
 
 button.ghost:not(:disabled):hover {
-  background: #f6f9fc;
-  border-color: #f6f9fc;
   color: #0a2540;
-  box-shadow: none;
 }
 
 button.chip {
   background: transparent;
   border: 1px solid var(--border);
+  border-radius: 999px;
   color: var(--muted);
   font-size: 0.8rem;
-  padding: 0.3rem 0.6rem;
+  padding: 0.3rem 0.75rem;
   text-align: left;
   letter-spacing: normal;
   line-height: 1.4;
