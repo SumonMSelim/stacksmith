@@ -1,14 +1,16 @@
 :root {
-  --bg: #f6f9fc;
-  --panel: #ffffff;
-  --border: #e3e8ee;
-  --text: #1a1f36;
-  --muted: #697386;
+  --bg: #0a2540;
+  --panel: #0e2b4a;
+  --panel-deep: #061a33;
+  --border: #1e3a5c;
+  --text: #f6f9fc;
+  --muted: #8aa4c0;
   --accent: #635bff;
-  --accent-dim: #0a2540;
-  --free: #0d8a53;
-  --paid: #b45309;
-  color-scheme: light;
+  --accent-hover: #7a73ff;
+  --cyan: #00d4ff;
+  --free: #3ecf8e;
+  --paid: #f5be58;
+  color-scheme: dark;
 }
 
 * {
@@ -37,10 +39,16 @@ body {
   flex-wrap: wrap;
 }
 
+h1,
+h2,
+h3 {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: -0.02em;
+}
+
 h1 {
   margin: 0;
   font-size: 1.9rem;
-  letter-spacing: -0.02em;
 }
 
 .hammer {
@@ -53,7 +61,7 @@ h1 {
 }
 
 a {
-  color: var(--accent);
+  color: var(--cyan);
 }
 
 .auth {
@@ -73,19 +81,18 @@ a {
 }
 
 .authmsg {
-  color: var(--accent);
+  color: var(--cyan);
   font-size: 0.85rem;
 }
 
 input,
 textarea {
-  background: var(--panel);
+  background: var(--panel-deep);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0;
   color: var(--text);
   padding: 0.55rem 0.75rem;
   font: inherit;
-  box-shadow: 0 1px 2px rgba(60, 66, 87, 0.08);
 }
 
 input:disabled,
@@ -100,19 +107,19 @@ textarea {
 
 textarea:focus,
 input:focus {
-  outline: 2px solid var(--accent-dim);
-  border-color: transparent;
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
 }
 
 button {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0;
   color: var(--text);
   padding: 0.5rem 0.9rem;
   font: inherit;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(60, 66, 87, 0.08);
 }
 
 button:disabled {
@@ -128,34 +135,49 @@ button.primary {
 }
 
 button.primary:not(:disabled):hover {
-  background: #524adb;
+  background: var(--accent-hover);
 }
 
 button.ghost {
   background: transparent;
-  box-shadow: none;
+}
+
+button.ghost:not(:disabled):hover {
+  border-color: var(--accent);
+}
+
+button.chip {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+}
+
+button.chip:not(:disabled):hover {
+  color: var(--text);
+  border-color: var(--cyan);
 }
 
 button.linklike {
   background: none;
   border: none;
-  box-shadow: none;
   padding: 0;
-  color: var(--accent);
+  color: var(--cyan);
   text-align: left;
 }
 
 button.iconbtn {
   background: none;
   border: none;
-  box-shadow: none;
   padding: 0 0.2rem;
   color: var(--muted);
   font-size: 0.8rem;
 }
 
 button.iconbtn:hover {
-  color: #e5424a;
+  color: #ff5c67;
 }
 
 .forge {
@@ -163,6 +185,12 @@ button.iconbtn:hover {
   flex-direction: column;
   gap: 0.75rem;
   margin-top: 1.5rem;
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
 .forgerow {
@@ -177,16 +205,15 @@ button.iconbtn:hover {
 }
 
 .error {
-  color: #e5636a;
+  color: #ff5c67;
 }
 
 .result {
   margin-top: 2rem;
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 1.25rem 1.5rem;
-  box-shadow: 0 2px 5px rgba(60, 66, 87, 0.08);
 }
 
 .resulthead {
@@ -198,12 +225,34 @@ button.iconbtn:hover {
 
 .result h2 {
   margin: 0;
-  font-family: ui-monospace, monospace;
-  color: var(--accent);
+  color: var(--cyan);
 }
 
 .summary {
   color: var(--muted);
+}
+
+.exportbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.exportbar button {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+}
+
+.mdview {
+  background: var(--panel-deep);
+  border: 1px solid var(--border);
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .services {
@@ -215,7 +264,7 @@ button.iconbtn:hover {
 
 .services li {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0.6rem 0.8rem;
 }
 
@@ -228,31 +277,31 @@ button.iconbtn:hover {
 .badge {
   font-size: 0.7rem;
   padding: 0.1rem 0.5rem;
-  border-radius: 999px;
+  border-radius: 0;
   margin-left: 0.6rem;
   vertical-align: middle;
 }
 
 .badge.free {
-  background: color-mix(in srgb, var(--free) 25%, transparent);
-  color: #7fd89a;
+  background: color-mix(in srgb, var(--free) 20%, transparent);
+  color: var(--free);
 }
 
 .badge.paid {
-  background: color-mix(in srgb, var(--paid) 25%, transparent);
-  color: #eec27a;
+  background: color-mix(in srgb, var(--paid) 20%, transparent);
+  color: var(--paid);
 }
 
 code {
-  font-family: ui-monospace, monospace;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
   font-size: 0.9em;
 }
 
 .commands {
-  background: var(--accent-dim);
-  color: #e3e8ee;
+  background: var(--panel-deep);
+  color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0.9rem 1rem;
   overflow-x: auto;
 }
@@ -279,6 +328,22 @@ code {
   font-size: 0.75rem;
 }
 
+.refinebar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.refinelabel {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 .history {
   margin-top: 2rem;
 }
@@ -296,11 +361,11 @@ code {
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.3rem 0.5rem;
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 .history li.active {
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .history li .linklike {

@@ -40,13 +40,21 @@ Respond with ONLY a JSON object, no markdown fences, matching:
 }`;
 
 export async function POST(req: NextRequest) {
-  const { idea } = await req.json();
+  const { idea, refine } = await req.json();
   if (typeof idea !== "string" || idea.trim().length < 10) {
     return NextResponse.json(
       { error: "Describe your app in at least one sentence." },
       { status: 400 },
     );
   }
+
+  // Optional refinement: prior plan + an instruction like "make it cheaper".
+  const refining =
+    refine &&
+    typeof refine.instruction === "string" &&
+    refine.instruction.trim().length > 0 &&
+    typeof refine.plan === "object" &&
+    refine.plan !== null;
 
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
@@ -81,6 +89,15 @@ export async function POST(req: NextRequest) {
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: idea.trim().slice(0, 500) },
+          ...(refining
+            ? [
+                { role: "assistant" as const, content: JSON.stringify(refine.plan) },
+                {
+                  role: "user" as const,
+                  content: `Refine the plan: ${refine.instruction.trim().slice(0, 300)}. Respond with ONLY the full updated JSON object in the same schema.`,
+                },
+              ]
+            : []),
         ],
         temperature: 0.3,
       }),
