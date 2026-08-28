@@ -1,0 +1,276 @@
+:root {
+  --bg: #14100c;
+  --panel: #1e1812;
+  --border: #35291d;
+  --text: #efe7db;
+  --muted: #a8987f;
+  --accent: #f0742e;
+  --accent-dim: #b3521c;
+  --free: #3f9c5c;
+  --paid: #c98a2b;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.55;
+}
+
+.wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.9rem;
+  letter-spacing: -0.02em;
+}
+
+.hammer {
+  font-size: 1.4rem;
+}
+
+.tag {
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+.auth {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.authrow {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.who {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.authmsg {
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+input,
+textarea {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+textarea:focus,
+input:focus {
+  outline: 2px solid var(--accent-dim);
+  border-color: transparent;
+}
+
+button {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0.5rem 0.9rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #180d05;
+  font-weight: 650;
+}
+
+button.primary:not(:disabled):hover {
+  background: #ff8a45;
+}
+
+button.ghost {
+  background: transparent;
+}
+
+button.linklike {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  text-align: left;
+}
+
+.forge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.error {
+  color: #e5636a;
+}
+
+.result {
+  margin-top: 2rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.resulthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.result h2 {
+  margin: 0;
+  font-family: ui-monospace, monospace;
+  color: var(--accent);
+}
+
+.summary {
+  color: var(--muted);
+}
+
+.services {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.services li {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+}
+
+.services li p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.6rem;
+  vertical-align: middle;
+}
+
+.badge.free {
+  background: color-mix(in srgb, var(--free) 25%, transparent);
+  color: #7fd89a;
+}
+
+.badge.paid {
+  background: color-mix(in srgb, var(--paid) 25%, transparent);
+  color: #eec27a;
+}
+
+code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.9em;
+}
+
+.commands {
+  background: #0e0a07;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+}
+
+.envmap {
+  list-style: none;
+  padding: 0;
+  color: var(--muted);
+  display: grid;
+  gap: 0.3rem;
+}
+
+.envmap code {
+  color: var(--text);
+}
+
+.notes {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.model {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.history {
+  margin-top: 2rem;
+}
+
+.history ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.history li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.when {
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+footer {
+  margin-top: 3rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}

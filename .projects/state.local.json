@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "project": {
+    "catalog": "prod",
+    "initializedAt": "2026-08-28T21:30:02.617Z",
+    "merchantDisplayName": "Stacksmith",
+    "merchantId": "acct_1U9XEwGU4Nifzbqj",
+    "projectId": "project_61VIvIwEdAmhIVtZE16VIvCIAQLJENhuVL7My7HjMBkO",
+    "projectName": "stacksmith"
+  },
+  "providers": {
+    "openrouter": {
+      "accountRequestId": "facctrq_61VIvMZ9qcxVYzEpt16VIvCIAQLJENhuVL7My7HjM0pM",
+      "configuration": {},
+      "linkedAt": "2026-08-28T21:33:49.328Z",
+      "providerId": "prvdr_61URImmFACEuDHEx651IO",
+      "providerName": "OpenRouter",
+      "redirectUrl": null,
+      "requestedAt": "2026-08-28T21:33:49.328Z",
+      "status": "complete"
+    },
+    "supabase": {
+      "accountRequestId": "facctrq_61VIvLcuLJRNVyWcS16VIvCIAQLJENhuVL7My7HjMWO0",
+      "configuration": {},
+      "linkedAt": "2026-08-28T21:32:59.418Z",
+      "providerId": "prvdr_61UIXYHdsyF69pZbG52n2",
+      "providerName": "Supabase",
+      "redirectUrl": null,
+      "requestedAt": "2026-08-28T21:32:59.418Z",
+      "status": "complete"
+    },
+    "vercel": {
+      "accountRequestId": "facctrq_61VIvLBRIKUWA0QZ216VIvCIAQLJENhuVL7My7HjMQvI",
+      "configuration": {},
+      "linkedAt": "2026-08-28T21:32:25.204Z",
+      "providerId": "prvdr_61ULUAr4zlQgZkvXY5LsG",
+      "providerName": "Vercel",
+      "redirectUrl": null,
+      "requestedAt": "2026-08-28T21:32:25.204Z",
+      "status": "complete"
+    }
+  },
+  "resources": {
+    "openrouter-api": {
+      "configuration": {},
+      "createdAt": "2026-08-28T21:33:50.735Z",
+      "lastRevealedAt": "2026-08-28T21:33:51.017Z",
+      "lastStatus": "complete",
+      "name": "openrouter-api",
+      "providerId": "prvdr_61URImmFACEuDHEx651IO",
+      "providerName": "OpenRouter",
+      "resourceId": "fres_61VIvMbjebjwCOFXg16VIvCIAQLJENhuVL7My7HjMNEG",
+      "serviceId": "api"
+    },
+    "supabase-plan": {
+      "configuration": {},
+      "createdAt": "2026-08-28T21:33:17.440Z",
+      "lastRevealedAt": "2026-08-28T21:33:17.723Z",
+      "lastStatus": "complete",
+      "name": "supabase-plan",
+      "providerId": "prvdr_61UIXYHdsyF69pZbG52n2",
+      "providerName": "Supabase",
+      "resourceId": "fres_61VIvLneHcmyVPMN416VIvCIAQLJENhuVL7My7HjM080",
+      "serviceId": "free"
+    },
+    "supabase-project": {
+      "configuration": {
+        "name": "stacksmith"
+      },
+      "createdAt": "2026-08-28T21:33:37.654Z",
+      "lastRevealedAt": "2026-08-28T21:33:37.957Z",
+      "lastStatus": "complete",
+      "name": "supabase-project",
+      "providerId": "prvdr_61UIXYHdsyF69pZbG52n2",
+      "providerName": "Supabase",
+      "resourceId": "fres_61VIvM8uEgguhtu5T16VIvCIAQLJENhuVL7My7HjMJqi",
+      "serviceId": "project"
+    },
+    "vercel-plan": {
+      "configuration": {},
+      "createdAt": "2026-08-28T21:32:27.076Z",
+      "lastRevealedAt": "2026-08-28T21:32:27.344Z",
+      "lastStatus": "complete",
+      "name": "vercel-plan",
+      "providerId": "prvdr_61ULUAr4zlQgZkvXY5LsG",
+      "providerName": "Vercel",
+      "resourceId": "fres_61VIvLGrHyCJxwodu16VIvCIAQLJENhuVL7My7HjM5VY",
+      "serviceId": "hobby"
+    },
+    "vercel-project": {
+      "configuration": {
+        "name": "stacksmith"
+      },
+      "createdAt": "2026-08-28T21:32:31.131Z",
+      "lastRevealedAt": "2026-08-28T21:32:31.411Z",
+      "lastStatus": "complete",
+      "name": "vercel-project",
+      "providerId": "prvdr_61ULUAr4zlQgZkvXY5LsG",
+      "providerName": "Vercel",
+      "resourceId": "fres_61VIvLKaIRU5x7nUg16VIvCIAQLJENhuVL7My7HjMBtQ",
+      "serviceId": "project"
+    }
+  }
+}

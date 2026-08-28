@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "providers": {
+    "openrouter": {
+      "name": "OpenRouter"
+    },
+    "supabase": {
+      "name": "Supabase"
+    },
+    "vercel": {
+      "name": "Vercel"
+    }
+  },
+  "resources": {
+    "openrouter-api": {
+      "name": "openrouter-api",
+      "providerName": "OpenRouter",
+      "serviceId": "api"
+    },
+    "supabase-plan": {
+      "name": "supabase-plan",
+      "providerName": "Supabase",
+      "serviceId": "free"
+    },
+    "supabase-project": {
+      "name": "supabase-project",
+      "providerName": "Supabase",
+      "serviceId": "project"
+    },
+    "vercel-plan": {
+      "name": "vercel-plan",
+      "providerName": "Vercel",
+      "serviceId": "hobby"
+    },
+    "vercel-project": {
+      "name": "vercel-project",
+      "providerName": "Vercel",
+      "serviceId": "project"
+    }
+  }
+}
