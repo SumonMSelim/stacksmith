@@ -8,6 +8,8 @@ docs/
 node_modules/
 .next/
 
+node_modules
+
 .projects/cache
 .projects/vault
 .projects/state.test.json
@@ -15,4 +17,3 @@ node_modules/
 .env
 .env.*
 !.env.example
-node_modules
