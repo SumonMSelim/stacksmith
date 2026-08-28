@@ -55,6 +55,8 @@ export default function Stacksmith({
   const [authMsg, setAuthMsg] = useState("");
 
   const [history, setHistory] = useState<HistoryRow[]>([]);
+  const [viewingId, setViewingId] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
   const lastIdea = useRef("");
 
   useEffect(() => {
@@ -86,6 +88,8 @@ export default function Stacksmith({
     setLoading(true);
     setError("");
     setPlan(null);
+    setViewingId(null);
+    setSaved(false);
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -104,8 +108,18 @@ export default function Stacksmith({
     }
   }
 
+  function newStack() {
+    setIdea("");
+    setPlan(null);
+    setModel("");
+    setError("");
+    setViewingId(null);
+    setSaved(false);
+    lastIdea.current = "";
+  }
+
   async function saveStack() {
-    if (!supabase || !user || !plan) return;
+    if (!supabase || !user || !plan || saved) return;
     const { data, error: err } = await supabase
       .from("stacks")
       .insert({ user_id: user.id, idea: lastIdea.current, plan })
@@ -116,6 +130,19 @@ export default function Stacksmith({
       return;
     }
     setHistory((h) => [data as HistoryRow, ...h]);
+    setSaved(true);
+    setViewingId((data as HistoryRow).id);
+  }
+
+  async function deleteStack(id: string) {
+    if (!supabase) return;
+    const { error: err } = await supabase.from("stacks").delete().eq("id", id);
+    if (err) {
+      setError(`Delete failed: ${err.message}`);
+      return;
+    }
+    setHistory((h) => h.filter((row) => row.id !== id));
+    if (viewingId === id) newStack();
   }
 
   async function sendMagicLink() {
@@ -191,10 +218,18 @@ export default function Stacksmith({
           onKeyDown={(e) => {
             if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) generate();
           }}
+          disabled={!!viewingId}
         />
-        <button className="primary" onClick={generate} disabled={loading || idea.trim().length < 10}>
-          {loading ? "Forging…" : "Forge my stack"}
-        </button>
+        <span className="forgerow">
+          <button className="primary" onClick={generate} disabled={loading || !!viewingId || idea.trim().length < 10}>
+            {loading ? "Forging…" : "Forge my stack"}
+          </button>
+          {(plan || viewingId) && (
+            <button className="ghost" onClick={newStack}>
+              ← Back to new
+            </button>
+          )}
+        </span>
       </div>
 
       {error && <p className="error">{error}</p>}
@@ -203,11 +238,18 @@ export default function Stacksmith({
         <section className="result">
           <div className="resulthead">
             <h2>{plan.app_name}</h2>
-            {user && (
-              <button className="ghost" onClick={saveStack}>
-                Save to history
-              </button>
-            )}
+            <span className="resultactions">
+              {user && !viewingId && (
+                <button className="ghost" onClick={saveStack} disabled={saved}>
+                  {saved ? "Saved" : "Save to history"}
+                </button>
+              )}
+              {viewingId && (
+                <button className="ghost" onClick={newStack}>
+                  New stack
+                </button>
+              )}
+            </span>
           </div>
           <p className="summary">{plan.summary}</p>
 
@@ -254,18 +296,24 @@ export default function Stacksmith({
           <h3>Your history</h3>
           <ul>
             {history.map((h) => (
-              <li key={h.id}>
+              <li key={h.id} className={h.id === viewingId ? "active" : ""}>
                 <button
                   className="linklike"
                   onClick={() => {
                     setIdea(h.idea);
                     setPlan(h.plan);
+                    setModel("");
+                    setViewingId(h.id);
+                    setSaved(true);
                     lastIdea.current = h.idea;
                   }}
                 >
                   {h.idea.length > 80 ? h.idea.slice(0, 80) + "…" : h.idea}
                 </button>
                 <span className="when">{new Date(h.created_at).toLocaleDateString()}</span>
+                <button className="iconbtn" title="Delete" onClick={() => deleteStack(h.id)}>
+                  ✕
+                </button>
               </li>
             ))}
           </ul>

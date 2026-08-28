@@ -1,14 +1,14 @@
 :root {
-  --bg: #14100c;
-  --panel: #1e1812;
-  --border: #35291d;
-  --text: #efe7db;
-  --muted: #a8987f;
-  --accent: #f0742e;
-  --accent-dim: #b3521c;
-  --free: #3f9c5c;
-  --paid: #c98a2b;
-  color-scheme: dark;
+  --bg: #f6f9fc;
+  --panel: #ffffff;
+  --border: #e3e8ee;
+  --text: #1a1f36;
+  --muted: #697386;
+  --accent: #635bff;
+  --accent-dim: #0a2540;
+  --free: #0d8a53;
+  --paid: #b45309;
+  color-scheme: light;
 }
 
 * {
@@ -19,7 +19,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   line-height: 1.55;
 }
 
@@ -85,6 +85,12 @@ textarea {
   color: var(--text);
   padding: 0.55rem 0.75rem;
   font: inherit;
+  box-shadow: 0 1px 2px rgba(60, 66, 87, 0.08);
+}
+
+input:disabled,
+textarea:disabled {
+  opacity: 0.6;
 }
 
 textarea {
@@ -106,6 +112,7 @@ button {
   padding: 0.5rem 0.9rem;
   font: inherit;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(60, 66, 87, 0.08);
 }
 
 button:disabled {
@@ -116,24 +123,39 @@ button:disabled {
 button.primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #180d05;
+  color: #ffffff;
   font-weight: 650;
 }
 
 button.primary:not(:disabled):hover {
-  background: #ff8a45;
+  background: #524adb;
 }
 
 button.ghost {
   background: transparent;
+  box-shadow: none;
 }
 
 button.linklike {
   background: none;
   border: none;
+  box-shadow: none;
   padding: 0;
   color: var(--accent);
   text-align: left;
+}
+
+button.iconbtn {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0 0.2rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+button.iconbtn:hover {
+  color: #e5424a;
 }
 
 .forge {
@@ -141,6 +163,17 @@ button.linklike {
   flex-direction: column;
   gap: 0.75rem;
   margin-top: 1.5rem;
+}
+
+.forgerow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.resultactions {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .error {
@@ -153,6 +186,7 @@ button.linklike {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 5px rgba(60, 66, 87, 0.08);
 }
 
 .resulthead {
@@ -215,7 +249,8 @@ code {
 }
 
 .commands {
-  background: #0e0a07;
+  background: var(--accent-dim);
+  color: #e3e8ee;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.9rem 1rem;
@@ -257,8 +292,23 @@ code {
 
 .history li {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+}
+
+.history li.active {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.history li .linklike {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .when {
