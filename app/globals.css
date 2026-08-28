@@ -114,14 +114,13 @@ input:focus {
   border-color: var(--accent);
 }
 
-/* stripe.dev button pattern: transparent with a 1px border in the text
-   color; hover inverts, filling with the border color and flipping the
-   text to the page background. Corners stay sharp. */
+/* Stripe-style buttons: whitish filled secondary, colorful blurple
+   primary. Corners stay sharp. */
 button {
-  background: transparent;
-  border: 1px solid var(--text);
+  background: #f6f9fc;
+  border: 1px solid #f6f9fc;
   border-radius: 0;
-  color: var(--text);
+  color: #0a2540;
   padding: 10px 12px 12px;
   font-family: inherit;
   font-size: 14px;
@@ -133,8 +132,9 @@ button {
 }
 
 button:not(:disabled):hover {
-  background: var(--text);
-  color: var(--bg);
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 button:disabled {
@@ -143,17 +143,27 @@ button:disabled {
 }
 
 button.primary {
+  background: var(--accent);
   border-color: var(--accent);
-  color: var(--accent-hover);
+  color: #ffffff;
 }
 
 button.primary:not(:disabled):hover {
-  background: var(--accent);
-  color: #ffffff;
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 button.ghost {
   background: transparent;
+  border-color: var(--text);
+  color: var(--text);
+}
+
+button.ghost:not(:disabled):hover {
+  background: #f6f9fc;
+  border-color: #f6f9fc;
+  color: #0a2540;
+  box-shadow: none;
 }
 
 button.chip {
