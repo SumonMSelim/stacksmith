@@ -2,22 +2,9 @@
 
 import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
 import { useEffect, useMemo, useRef, useState } from "react";
-
-type Service = {
-  slug: string;
-  category: string;
-  reason: string;
-  pricing: string;
-};
-
-type Plan = {
-  app_name: string;
-  summary: string;
-  services: Service[];
-  setup_commands: string[];
-  env_map: Record<string, string>;
-  notes?: string;
-};
+import type { Plan } from "@/lib/plan-types";
+import { planToLlmPrompt, planToMarkdown, planToSetupScript } from "@/lib/plan-markdown";
+import { decodeSharedPlan, encodeSharedPlan } from "@/lib/plan-share";
 
 type HistoryRow = {
   id: string;
@@ -25,6 +12,15 @@ type HistoryRow = {
   plan: Plan;
   created_at: string;
 };
+
+const EXAMPLE_IDEAS = [
+  "A private feedback app with login, search, and AI summaries",
+  "A recipe box that turns photos of handwritten recipes into searchable cards",
+  "A waitlist page with referral tracking and an email drip",
+  "A voice journal that transcribes entries and finds recurring themes",
+];
+
+const REFINE_OPTIONS = ["Make it cheaper", "Add auth", "Add payments", "Simplify"];
 
 export default function Stacksmith({
   supabaseUrl,
@@ -47,6 +43,7 @@ export default function Stacksmith({
   const [plan, setPlan] = useState<Plan | null>(null);
   const [model, setModel] = useState("");
   const [loading, setLoading] = useState(false);
+  const [refiningWith, setRefiningWith] = useState("");
   const [error, setError] = useState("");
 
   const [user, setUser] = useState<User | null>(null);
@@ -57,7 +54,24 @@ export default function Stacksmith({
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [viewingId, setViewingId] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [showMarkdown, setShowMarkdown] = useState(false);
+  const [copiedKey, setCopiedKey] = useState("");
   const lastIdea = useRef("");
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Load a shared plan from the URL fragment (#p=...).
+  useEffect(() => {
+    const match = window.location.hash.match(/^#p=([A-Za-z0-9_-]+)/);
+    if (!match) return;
+    try {
+      const shared = decodeSharedPlan(match[1]);
+      setIdea(shared.idea);
+      setPlan(shared.plan);
+      lastIdea.current = shared.idea;
+    } catch {
+      setError("That shared plan link is invalid or truncated.");
+    }
+  }, []);
 
   useEffect(() => {
     if (!supabase) return;
@@ -84,28 +98,42 @@ export default function Stacksmith({
       .then(({ data }) => setHistory((data as HistoryRow[]) ?? []));
   }, [supabase, user]);
 
-  async function generate() {
-    setLoading(true);
+  async function callGenerate(body: Record<string, unknown>) {
     setError("");
-    setPlan(null);
-    setViewingId(null);
-    setSaved(false);
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idea }),
+        body: JSON.stringify(body),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Generation failed");
       setPlan(data.plan);
       setModel(data.model ?? "");
-      lastIdea.current = idea;
+      setSaved(false);
+      setViewingId(null);
+      setShowMarkdown(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong");
-    } finally {
-      setLoading(false);
     }
+  }
+
+  async function generate() {
+    setLoading(true);
+    setPlan(null);
+    lastIdea.current = idea;
+    await callGenerate({ idea });
+    setLoading(false);
+  }
+
+  async function refine(instruction: string) {
+    if (!plan) return;
+    setRefiningWith(instruction);
+    await callGenerate({
+      idea: lastIdea.current,
+      refine: { plan, instruction },
+    });
+    setRefiningWith("");
   }
 
   function newStack() {
@@ -115,7 +143,11 @@ export default function Stacksmith({
     setError("");
     setViewingId(null);
     setSaved(false);
+    setShowMarkdown(false);
     lastIdea.current = "";
+    if (window.location.hash.startsWith("#p=")) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
   }
 
   async function saveStack() {
@@ -162,11 +194,28 @@ export default function Stacksmith({
     }
   }
 
+  function copy(key: string, text: string) {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    if (copyTimer.current) clearTimeout(copyTimer.current);
+    copyTimer.current = setTimeout(() => setCopiedKey(""), 1600);
+  }
+
+  function copyShareLink() {
+    if (!plan) return;
+    const encoded = encodeSharedPlan({ idea: lastIdea.current, plan });
+    copy("share", `${window.location.origin}/#p=${encoded}`);
+  }
+
+  const busy = loading || refiningWith !== "";
+
   return (
     <main className="wrap">
       <header className="top">
         <h1>
-          Stacksmith <span className="hammer">🔨</span>
+          <a className="logolink" href="/">
+            Stacksmith <span className="hammer">🔨</span>
+          </a>
         </h1>
         <div className="auth">
           {user ? (
@@ -220,8 +269,21 @@ export default function Stacksmith({
           }}
           disabled={!!viewingId}
         />
+        {!plan && !loading && (
+          <div className="examples">
+            {EXAMPLE_IDEAS.map((ex) => (
+              <button key={ex} className="chip" onClick={() => setIdea(ex)}>
+                {ex}
+              </button>
+            ))}
+          </div>
+        )}
         <span className="forgerow">
-          <button className="primary" onClick={generate} disabled={loading || !!viewingId || idea.trim().length < 10}>
+          <button
+            className="primary"
+            onClick={generate}
+            disabled={busy || !!viewingId || idea.trim().length < 10}
+          >
             {loading ? "Forging…" : "Forge my stack"}
           </button>
           {(plan || viewingId) && (
@@ -253,41 +315,85 @@ export default function Stacksmith({
           </div>
           <p className="summary">{plan.summary}</p>
 
-          <h3>Recommended services</h3>
-          <ul className="services">
-            {plan.services.map((s) => (
-              <li key={s.slug}>
-                <code>{s.slug}</code>
-                <span className={`badge ${s.pricing.toLowerCase().includes("free") ? "free" : "paid"}`}>
-                  {s.pricing}
-                </span>
-                <p>{s.reason}</p>
-              </li>
-            ))}
-          </ul>
+          <div className="exportbar">
+            <button className="ghost" onClick={copyShareLink}>
+              {copiedKey === "share" ? "Link copied" : "Copy share link"}
+            </button>
+            <button className="ghost" onClick={() => copy("script", planToSetupScript(plan))}>
+              {copiedKey === "script" ? "Copied" : "Copy setup script"}
+            </button>
+            <button
+              className="ghost"
+              onClick={() => copy("llm", planToLlmPrompt(lastIdea.current, plan))}
+            >
+              {copiedKey === "llm" ? "Copied" : "Copy for LLM"}
+            </button>
+            <button className="ghost" onClick={() => setShowMarkdown((v) => !v)}>
+              {showMarkdown ? "View formatted" : "View as Markdown"}
+            </button>
+          </div>
 
-          <h3>Setup commands</h3>
-          <pre className="commands">
-            <code>{plan.setup_commands.join("\n")}</code>
-          </pre>
-          <button
-            className="ghost"
-            onClick={() => navigator.clipboard.writeText(plan.setup_commands.join("\n"))}
-          >
-            Copy commands
-          </button>
+          {showMarkdown ? (
+            <pre className="mdview">
+              <code>{planToMarkdown(lastIdea.current, plan)}</code>
+            </pre>
+          ) : (
+            <>
+              <h3>Recommended services</h3>
+              <ul className="services">
+                {plan.services.map((s) => (
+                  <li key={s.slug}>
+                    <code>{s.slug}</code>
+                    <span
+                      className={`badge ${s.pricing.toLowerCase().includes("free") ? "free" : "paid"}`}
+                    >
+                      {s.pricing}
+                    </span>
+                    <p>{s.reason}</p>
+                  </li>
+                ))}
+              </ul>
 
-          <h3>Starter .env map</h3>
-          <ul className="envmap">
-            {Object.entries(plan.env_map).map(([k, v]) => (
-              <li key={k}>
-                <code>{k}</code>: {v}
-              </li>
-            ))}
-          </ul>
+              <h3>Setup commands</h3>
+              <pre className="commands">
+                <code>{plan.setup_commands.join("\n")}</code>
+              </pre>
+              <button
+                className="ghost"
+                onClick={() => copy("commands", plan.setup_commands.join("\n"))}
+              >
+                {copiedKey === "commands" ? "Copied" : "Copy commands"}
+              </button>
 
-          {plan.notes && <p className="notes">{plan.notes}</p>}
-          {model && <p className="model">model: {model}</p>}
+              <h3>Starter .env map</h3>
+              <ul className="envmap">
+                {Object.entries(plan.env_map).map(([k, v]) => (
+                  <li key={k}>
+                    <code>{k}</code>: {v}
+                  </li>
+                ))}
+              </ul>
+
+              {plan.notes && <p className="notes">{plan.notes}</p>}
+              {model && <p className="model">model: {model}</p>}
+            </>
+          )}
+
+          {!viewingId && (
+            <div className="refinebar">
+              <span className="refinelabel">Refine:</span>
+              {REFINE_OPTIONS.map((opt) => (
+                <button
+                  key={opt}
+                  className="chip"
+                  onClick={() => refine(opt)}
+                  disabled={busy}
+                >
+                  {refiningWith === opt ? "Reforging…" : opt}
+                </button>
+              ))}
+            </div>
+          )}
         </section>
       )}
 
@@ -305,6 +411,7 @@ export default function Stacksmith({
                     setModel("");
                     setViewingId(h.id);
                     setSaved(true);
+                    setShowMarkdown(false);
                     lastIdea.current = h.idea;
                   }}
                 >
@@ -328,7 +435,8 @@ export default function Stacksmith({
           rel="noreferrer"
         >
           by SumonMSelim
-        </a>
+        </a>{" "}
+        · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a>
       </footer>
     </main>
   );
