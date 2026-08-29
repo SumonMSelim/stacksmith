@@ -213,7 +213,9 @@ export default function Stacksmith({
     <main className="wrap">
       <header className="top">
         <h1>
-          Stacksmith <span className="hammer">🔨</span>
+          <a className="logolink" href="/">
+            Stacksmith <span className="hammer">🔨</span>
+          </a>
         </h1>
         <div className="auth">
           {user ? (

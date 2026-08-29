@@ -73,6 +73,16 @@ h1 {
   font-size: 1.4rem;
 }
 
+a.logolink {
+  color: var(--heading);
+  text-decoration: none;
+}
+
+a.logolink:hover {
+  background: none;
+  color: var(--teal);
+}
+
 .tag {
   color: var(--muted);
   margin-top: 0.4rem;
