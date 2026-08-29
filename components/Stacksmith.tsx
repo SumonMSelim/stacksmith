@@ -433,7 +433,8 @@ export default function Stacksmith({
           rel="noreferrer"
         >
           by SumonMSelim
-        </a>
+        </a>{" "}
+        · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a>
       </footer>
     </main>
   );

@@ -1,14 +1,14 @@
 :root {
-  --bg: #0a2540;
-  --panel: #0e2b4a;
-  --panel-deep: #061a33;
-  --border: #1e3a5c;
+  --bg: #041724;
+  --panel: #081f30;
+  --panel-deep: #020f19;
+  --border: #16344c;
   --text: #c0c7d1;
   --heading: #f6f9fc;
   --muted: #8aa4c0;
-  --accent: #635bff;
-  --accent-hover: #7a73ff;
-  --cyan: #00d4ff;
+  --teal: #7ad1c3;
+  --lime: #a5e962;
+  --ink: #041724;
   --free: #3ecf8e;
   --paid: #f5be58;
   color-scheme: dark;
@@ -24,6 +24,22 @@ body {
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   line-height: 1.55;
+}
+
+/* Colorful gradient ribbon backdrop, stripe.com style, flowing down the
+   right side behind the content. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 55% at 88% 6%, rgba(255, 153, 66, 0.4), transparent 70%),
+    radial-gradient(32% 50% at 99% 42%, rgba(255, 77, 172, 0.35), transparent 70%),
+    radial-gradient(30% 48% at 82% 76%, rgba(122, 128, 255, 0.32), transparent 70%),
+    radial-gradient(24% 40% at 70% 24%, rgba(96, 178, 255, 0.22), transparent 70%);
+  filter: blur(48px);
 }
 
 .wrap {
@@ -62,8 +78,18 @@ h1 {
   margin-top: 0.4rem;
 }
 
+/* Links: teal and underlined; hover swaps to a lime highlight fill with
+   dark text, like a text selection. */
 a {
-  color: var(--cyan);
+  color: var(--teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  background: var(--lime);
+  color: var(--ink);
+  text-decoration: none;
 }
 
 .auth {
@@ -83,7 +109,7 @@ a {
 }
 
 .authmsg {
-  color: var(--cyan);
+  color: var(--teal);
   font-size: 0.85rem;
 }
 
@@ -109,30 +135,31 @@ textarea {
 
 textarea:focus,
 input:focus {
-  outline: 1px solid var(--accent);
+  outline: 1px solid var(--teal);
   outline-offset: 1px;
-  border-color: var(--accent);
+  border-color: var(--teal);
 }
 
-/* stripe.com buttons: pill-shaped, blurple filled primary, white
-   secondary with blurple text. */
+/* Buttons: sharp corners, teal outline; hover fills teal with dark
+   text, like the stripe.dev agentic commerce post. */
 button {
-  background: #ffffff;
-  border: 1px solid #ffffff;
-  border-radius: 999px;
-  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--teal);
+  border-radius: 0;
+  color: var(--teal);
   padding: 8px 16px 10px;
   font-family: inherit;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.1px;
   line-height: 1.3;
   cursor: pointer;
-  transition: all 150ms ease-in-out;
+  transition: all 120ms ease-in-out;
 }
 
 button:not(:disabled):hover {
-  color: #0a2540;
+  background: var(--teal);
+  color: var(--ink);
 }
 
 button:disabled {
@@ -141,33 +168,28 @@ button:disabled {
 }
 
 button.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #ffffff;
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--ink);
 }
 
 button.primary:not(:disabled):hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-  color: #ffffff;
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--ink);
 }
 
 button.ghost {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: var(--accent);
-}
-
-button.ghost:not(:disabled):hover {
-  color: #0a2540;
+  background: transparent;
 }
 
 button.chip {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 0;
   color: var(--muted);
   font-size: 0.8rem;
+  font-weight: 400;
   padding: 0.3rem 0.75rem;
   text-align: left;
   letter-spacing: normal;
@@ -175,26 +197,29 @@ button.chip {
 }
 
 button.chip:not(:disabled):hover {
-  background: var(--muted);
-  color: var(--bg);
-  border-color: var(--muted);
+  background: var(--teal);
+  color: var(--ink);
+  border-color: var(--teal);
 }
 
 button.linklike {
   background: none;
   border: none;
   padding: 0;
-  color: var(--cyan);
+  color: var(--teal);
   text-align: left;
   font-size: inherit;
+  font-weight: 400;
   letter-spacing: normal;
   line-height: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 button.linklike:not(:disabled):hover {
-  background: none;
-  color: var(--cyan);
-  text-decoration: underline;
+  background: var(--lime);
+  color: var(--ink);
+  text-decoration: none;
 }
 
 button.iconbtn {
@@ -255,7 +280,7 @@ button.iconbtn:not(:disabled):hover {
 
 .result h2 {
   margin: 0;
-  color: var(--cyan);
+  color: var(--teal);
 }
 
 .summary {
@@ -395,7 +420,7 @@ code {
 }
 
 .history li.active {
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  background: color-mix(in srgb, var(--teal) 14%, transparent);
 }
 
 .history li .linklike {
@@ -418,4 +443,27 @@ footer {
   font-size: 0.85rem;
   border-top: 1px solid var(--border);
   padding-top: 1rem;
+}
+
+.legal {
+  max-width: 680px;
+}
+
+.legal h1 {
+  font-size: 1.5rem;
+}
+
+.legal h2 {
+  font-size: 1.05rem;
+  margin-top: 2rem;
+}
+
+.legal p,
+.legal li {
+  color: var(--text);
+}
+
+.legal .updated {
+  color: var(--muted);
+  font-size: 0.8rem;
 }
