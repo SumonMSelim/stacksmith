@@ -1,5 +1,13 @@
 # Stacksmith 🔨
 
+[![Live](https://img.shields.io/badge/demo-stacksmith--seven.vercel.app-7ad1c3)](https://stacksmith-seven.vercel.app)
+[![License: MIT](https://img.shields.io/badge/license-MIT-a5e962)](LICENSE)
+[![Code of Conduct](https://img.shields.io/badge/code%20of%20conduct-Contributor%20Covenant%202.1-635bff)](CODE_OF_CONDUCT.md)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=nextdotjs)](https://nextjs.org)
+[![Supabase](https://img.shields.io/badge/Supabase-auth%20%2B%20db-3ecf8e?logo=supabase)](https://supabase.com)
+[![OpenRouter](https://img.shields.io/badge/OpenRouter-free%20models-8aa4c0)](https://openrouter.ai)
+[![Deployed on Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel)](https://vercel.com)
+
 **Describe your app in one sentence, get a provisioned architecture plan for the Stripe Projects CLI.**
 
 Stacksmith is an AI-powered tool that takes a one-line app idea (e.g. *"I need a private feedback app with login, search, and AI summaries"*) and outputs:
